@@ -4,11 +4,16 @@
 import ctypes
 import sys
 
-try:
-	soloud_dll = ctypes.CDLL("libraries/soloud_x86")
-except:
-	print("SoLoud dynamic link library (soloud_x86.dll on Windows) not found. Terminating.")
-	sys.exit()
+print()
+if sys.platform == "win32":
+	try:
+		soloud_dll = ctypes.CDLL("libraries/soloud_x86")
+		soloud_dll = ctypes.CDLL("libraries/libsoloud_static")
+	except:
+		print("SoLoud dynamic link library (soloud_x86.dll on Windows) not found. Terminating.")
+		sys.exit()
+elif sys.platform == "darwin":
+	soloud_dll = ctypes.CDLL("libraries/libsoloud.dylib")
 
 # Raw DLL functions
 Soloud_destroy = soloud_dll.Soloud_destroy
